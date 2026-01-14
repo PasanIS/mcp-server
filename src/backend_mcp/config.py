@@ -1,11 +1,20 @@
+
 """Configuration-Restaurant Backend MCP Server"""
+
 import os
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field
 from typing import Optional
 
 
 class Setting(BaseSettings):
+
+    model_config = SettingsConfigDict(
+        env_file=".env",
+        env_file_encoding="utf-8",
+        case_sensitive=False,
+        extra="ignore"  # -----Ignore extra fields in .env
+    )
 
     # -----API Configuration
     backend_url: str = Field(default="http://localhost:8080", description="Backend URL")
@@ -21,9 +30,5 @@ class Setting(BaseSettings):
     # -----Environment
     environment: str = Field(default="development", description="Environment name (development, production, staging)")
 
-    class Config:
-        env_file = ".env"
-        env_file_encoding = "utf-8"
-        case_sensitive = False
 
-setting = Setting() # -----Global setting instance
+settings = Setting() # -----Global setting instance
